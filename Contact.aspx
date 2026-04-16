@@ -140,8 +140,8 @@
                     <div class="glass-card">
                         <h3 class="glass-title"><i class="fa-solid fa-building"></i> Office Contact</h3>
                         <p class="meta-line"><i class="fa-solid fa-signature"></i> <strong>Office Name:</strong> HimVeda</p>
-                        <p class="meta-line"><i class="fa-solid fa-location-dot"></i> <strong>Location:</strong> Newplax-za, KTM</p>
-                        <p class="meta-line"><i class="fa-solid fa-clock"></i> <strong>Status:</strong> Coming soon</p>
+                        <p class="meta-line"><i class="fa-solid fa-location-dot"></i> <strong>Location:</strong> Sanu Complex</p>
+                        <p class="meta-line"><i class="fa-solid fa-clock"></i> <strong>Support Status:</strong> Available 24/7</p>
                         <p class="meta-line"><i class="fa-solid fa-envelope"></i> support@himveda.com</p>
                         <p class="meta-line"><i class="fa-solid fa-phone"></i> +977 1234567890</p>
                     </div>

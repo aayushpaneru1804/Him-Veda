@@ -80,6 +80,8 @@
     <Content Include="ProductDetails.aspx" />
     <Content Include="Products.aspx" />
     <Content Include="Register.aspx" />
+    <Content Include="ForgotPassword.aspx" />
+    <Content Include="ResetPassword.aspx" />
     <Content Include="Web.config" />
     <Content Include="Images\placeholder.svg" />
   </ItemGroup>
@@ -210,6 +212,14 @@
       <DependentUpon>Register.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="ForgotPassword.aspx.cs">
+      <DependentUpon>ForgotPassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ResetPassword.aspx.cs">
+      <DependentUpon>ResetPassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Classes\DBHelper.cs" />
     <Compile Include="Classes\CartHelper.cs" />
   </ItemGroup>
@@ -279,6 +289,8 @@
     <Compile Include="ProductDetails.aspx.designer.cs" />
     <Compile Include="Products.aspx.designer.cs" />
     <Compile Include="Register.aspx.designer.cs" />
+    <Compile Include="ForgotPassword.aspx.designer.cs" />
+    <Compile Include="ResetPassword.aspx.designer.cs" />
     <Compile Include="Site.Master.designer.cs" />
   </ItemGroup>
 </Project>

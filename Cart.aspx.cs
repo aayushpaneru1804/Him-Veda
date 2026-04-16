@@ -50,6 +50,32 @@ namespace HimVeda
                 }
 
                 litSubTotal.Text = subtotal.ToString("C");
+
+                if (Session["CouponCode"] != null)
+                {
+                    string code = Session["CouponCode"].ToString();
+                    string cSql = "SELECT DiscountType, DiscountValue, MinOrderAmount FROM Coupons WHERE Code = @code AND IsActive = 1";
+                    System.Data.DataTable cdt = DBHelper.ExecuteQuery(cSql, new SqlParameter[] { new SqlParameter("@code", code) });
+                    if (cdt.Rows.Count > 0)
+                    {
+                        decimal minOrder = Convert.ToDecimal(cdt.Rows[0]["MinOrderAmount"]);
+                        if (subtotal >= minOrder)
+                        {
+                            string cType = cdt.Rows[0]["DiscountType"].ToString();
+                            decimal cVal = Convert.ToDecimal(cdt.Rows[0]["DiscountValue"]);
+                            if (cType.Equals("Percentage", StringComparison.OrdinalIgnoreCase))
+                            {
+                                Session["DiscountAmount"] = subtotal * (cVal / 100m);
+                            }
+                        }
+                        else
+                        {
+                            Session["DiscountAmount"] = 0;
+                            Session["CouponCode"] = null;
+                            Session["CouponID"] = null;
+                        }
+                    }
+                }
                 
                 decimal discount = Session["DiscountAmount"] != null ? Convert.ToDecimal(Session["DiscountAmount"]) : 0;
                 
@@ -123,7 +149,7 @@ namespace HimVeda
             string code = txtCoupon.Text.Trim();
             if (string.IsNullOrEmpty(code)) return;
 
-            string checkSql = "SELECT * FROM Coupons WHERE Code = @code AND IsActive = 1 AND EndDate >= GETDATE() AND StartDate <= GETDATE()";
+            string checkSql = "SELECT * FROM Coupons WHERE Code = @code AND IsActive = 1 AND CAST(EndDate AS DATE) >= CAST(GETDATE() AS DATE) AND CAST(StartDate AS DATE) <= CAST(GETDATE() AS DATE)";
             DataTable dt = DBHelper.ExecuteQuery(checkSql, new SqlParameter[] { new SqlParameter("@code", code) });
 
             if (dt.Rows.Count > 0)
@@ -144,9 +170,9 @@ namespace HimVeda
                 decimal val = Convert.ToDecimal(cRow["DiscountValue"]);
                 decimal computedDiscount = 0;
 
-                if (type == "Percentage")
+                if (type.Equals("Percentage", StringComparison.OrdinalIgnoreCase))
                 {
-                    computedDiscount = currentSubtotal * (val / 100);
+                    computedDiscount = currentSubtotal * (val / 100m);
                 }
                 else
                 {

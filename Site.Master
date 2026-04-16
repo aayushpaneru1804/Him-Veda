@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><asp:ContentPlaceHolder ID="TitleContent" runat="server">HimVeda</asp:ContentPlaceHolder> - Authentic Himalayan Products</title>
     
-    <link href="~/CSS/style.css" rel="stylesheet" type="text/css" />
+    <link href="~/CSS/style.css?v=2.5" rel="stylesheet" type="text/css" />
     <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     
@@ -50,10 +50,9 @@
 <body>
     <form id="form1" runat="server">
         <header>
-            <div class="container flex justify-between items-center navbar">
-                <a href="Default.aspx" class="logo">
-                    <i class="fa-solid fa-leaf" style="color: var(--primary-color);"></i>
-                    HimVeda
+            <div class="container flex items-center navbar" style="gap: 2.5rem;">
+                <a href="Default.aspx" class="logo" style="text-decoration:none; padding: 0.1rem 0;">
+                    <img src="Images/logo.png" alt="HimVeda Logo" style="height: 60px; object-fit: contain; min-width: 120px; display: block; mix-blend-mode: multiply;" />
                 </a>
                 
                 <div class="nav-middle">
@@ -61,6 +60,9 @@
                         <li><a href="Default.aspx">Home</a></li>
                         <li><a href="Products.aspx">Products</a></li>
                         <li><a href="Categories.aspx">Categories</a></li>
+                        <% if (Session["Role"] != null && Session["Role"].ToString() == "Customer") { %>
+                        <li><a href="OrderHistory.aspx">Order History</a></li>
+                        <% } %>
                         <li><a href="Contact.aspx">Contact</a></li>
                     </ul>
                 </div>
@@ -84,7 +86,6 @@
                                     </button>
                                     <div class="user-dropdown-content">
                                         <a href="Profile.aspx"><i class="fa-solid fa-id-badge mr-2"></i> Profile</a>
-                                        <a href="OrderHistory.aspx"><i class="fa-solid fa-box-open mr-2"></i> Orders</a>
                                         <a href="Login.aspx?logout=1&toast=Logged%20out%20successfully.&toastType=success" style="color: #ef4444;"><i class="fa-solid fa-right-from-bracket mr-2"></i> Logout</a>
                                     </div>
                                 </div>

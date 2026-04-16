@@ -7,7 +7,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="HeadContent" runat="server">
     <style>
         .hero {
-            background: linear-gradient(135deg, rgba(27,67,50,0.9), rgba(82,183,136,0.8)), url('https://images.unsplash.com/photo-1629196914566-1c469fdec2c9?q=80&w=1200&auto=format&fit=crop') center/cover;
+            background: linear-gradient(135deg, rgba(27,67,50,0.6), rgba(82,183,136,0.4)), url('Images/himalayan_banner.png') center/cover;
             color: white;
             padding: 6rem 2rem;
             border-radius: var(--border-radius);
@@ -171,7 +171,7 @@
             <asp:Repeater ID="rptTestimonials" runat="server">
                 <ItemTemplate>
                     <div class="card" style="padding: 2rem; text-align: center;">
-                        <img src='<%# ResolveUrl(GetProfileImage(Eval("ProfileImage"))) %>' alt='<%# Eval("FullName") %>' style="width: 55px; height: 55px; object-fit: cover; border-radius: 50%; margin: 0 auto 1rem; border: 2px solid #e2e8f0;" />
+                        <img src='<%# ResolveUrl(GetProfileImage(Eval("ProfileImage"))) %>' alt='<%# Eval("FullName") %>' style="width: 85px; height: 85px; object-fit: cover; border-radius: 50%; margin: 0 auto 1.2rem; border: 3px solid #e2e8f0;" />
                         <div style="font-size: 1.5rem; color: #fbbf24; margin-bottom: 1rem;"><%# GetStars(Convert.ToInt32(Eval("Rating"))) %></div>
                         <p style="font-style: italic; color: #475569; margin-bottom: 1rem;">"<%# Eval("Comment") %>"</p>
                         <h4 style="color: var(--primary-dark);">- <%# Eval("FullName") %></h4>
@@ -182,17 +182,17 @@
 
         <!-- Combined CTA Grid -->
         <div class="cta-grid" style="margin-top: 5rem;">
-            <div class="cta-grid-card" style="background: linear-gradient(135deg, #ecfdf5, #f0fdf4);">
+            <div class="cta-grid-card">
                 <div style="font-size: 2.2rem; color: #166534; margin-bottom: 0.8rem;"><i class="fa-solid fa-store"></i></div>
                 <h3 style="font-size: 1.5rem; margin-bottom: 0.7rem;">Are you a local vendor?</h3>
                 <p style="color: #475569; margin-bottom: 1rem;">Join HimVeda and expand your reach across the globe.</p>
                 <a href="Register.aspx" class="btn btn-primary">Become a Seller <i class="fa-solid fa-store ml-2"></i></a>
             </div>
 
-            <div class="cta-grid-card" style="background: linear-gradient(135deg, #f0f9ff, #eff6ff);">
+            <div class="cta-grid-card">
                 <div style="font-size: 2.2rem; color: #0284c7; margin-bottom: 0.8rem;"><i class="fa-solid fa-map-location-dot"></i></div>
                 <h3 style="font-size: 1.5rem; margin-bottom: 0.7rem;">Contact Our Office</h3>
-                <p style="color: #475569; margin-bottom: 1rem;">HimVeda | Newplax-za, KTM | Coming soon</p>
+                <p style="color: #475569; margin-bottom: 1rem;">HimVeda | Sanu Complex | Available 24/7</p>
                 <a href="Contact.aspx" class="btn btn-primary">Contact Us <i class="fa-solid fa-arrow-right ml-2"></i></a>
             </div>
 
@@ -200,7 +200,7 @@
                 <div style="font-size: 2.2rem; color: #f59e0b; margin-bottom: 0.8rem;"><i class="fa-regular fa-comment-dots"></i></div>
                 <h3 style="font-size: 1.5rem; margin-bottom: 0.7rem;">Share Feedback</h3>
                 <p style="color: #475569; margin-bottom: 1rem;">Your feedback helps us improve and serve you better.</p>
-                <a href="Feedback.aspx" class="btn btn-outline" style="border-color: var(--primary-color); color: var(--primary-color);">Give Feedback <i class="fa-solid fa-arrow-right ml-2"></i></a>
+                <a href="Feedback.aspx" class="btn btn-primary">Give Feedback <i class="fa-solid fa-arrow-right ml-2"></i></a>
             </div>
         </div>
     </div>

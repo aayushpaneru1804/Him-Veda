@@ -104,12 +104,12 @@
         <div id="customer-form">
             <div class="form-group">
                 <label class="form-label">Full Name</label>
-                <asp:TextBox ID="txtCustName" runat="server" CssClass="form-control" placeholder="John Doe"></asp:TextBox>
+                <asp:TextBox ID="txtCustName" runat="server" CssClass="form-control" placeholder="Enter Your Full Name"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="rfvCustName" runat="server" ControlToValidate="txtCustName" ErrorMessage="Name is required." CssClass="validator-error" Display="Dynamic" ValidationGroup="RegisterGroup"></asp:RequiredFieldValidator>
             </div>
             <div class="form-group">
                 <label class="form-label">Email Address</label>
-                <asp:TextBox ID="txtCustEmail" runat="server" CssClass="form-control" TextMode="Email" placeholder="john@example.com"></asp:TextBox>
+                <asp:TextBox ID="txtCustEmail" runat="server" CssClass="form-control" TextMode="Email" placeholder="Enter your Email"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="rfvCustEmail" runat="server" ControlToValidate="txtCustEmail" ErrorMessage="Email is required." CssClass="validator-error" Display="Dynamic" ValidationGroup="RegisterGroup"></asp:RequiredFieldValidator>
                 <asp:RegularExpressionValidator ID="revCustEmail" runat="server" ControlToValidate="txtCustEmail" ErrorMessage="Only @gmail.com is accepted." CssClass="validator-error" Display="Dynamic" ValidationExpression="^[a-zA-Z0-9_.+-]+@gmail\.com$" ValidationGroup="RegisterGroup"></asp:RegularExpressionValidator>
             </div>
@@ -120,7 +120,7 @@
             </div>
             <div class="form-group">
                 <label class="form-label">Password</label>
-                <asp:TextBox ID="txtCustPassword" runat="server" CssClass="form-control" TextMode="Password" placeholder="••••••••"></asp:TextBox>
+                <asp:TextBox ID="txtCustPassword" runat="server" CssClass="form-control" TextMode="Password" placeholder="Enter your Password"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="rfvCustPass" runat="server" ControlToValidate="txtCustPassword" ErrorMessage="Password is required." CssClass="validator-error" Display="Dynamic" ValidationGroup="RegisterGroup"></asp:RequiredFieldValidator>
             </div>
             
@@ -150,7 +150,7 @@
             
             <div class="form-group">
                 <label class="form-label">Security Answer</label>
-                <asp:TextBox ID="txtCustSecAnswer" runat="server" CssClass="form-control" placeholder="Secret answer"></asp:TextBox>
+                <asp:TextBox ID="txtCustSecAnswer" runat="server" CssClass="form-control" placeholder="Secret answer..."></asp:TextBox>
                 <asp:RequiredFieldValidator ID="rfvCustSecA" runat="server" ControlToValidate="txtCustSecAnswer" ErrorMessage="Security Answer is required." CssClass="validator-error" Display="Dynamic" ValidationGroup="RegisterGroup"></asp:RequiredFieldValidator>
             </div>
         </div>

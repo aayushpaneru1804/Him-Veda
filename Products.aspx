@@ -8,19 +8,36 @@
     <style>
         .catalog-container { display: flex; gap: 2rem; margin-top: 2rem; }
         .filter-sidebar { width: 250px; flex-shrink: 0; }
-        .product-grid { flex: 1; display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; }
+        .product-grid { flex: 1; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.5rem; }
         .product-card { background: white; border-radius: var(--border-radius); box-shadow: var(--shadow-sm); transition: transform 0.2s; overflow: hidden; }
         .product-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
         .product-img { width: 100%; height: 200px; object-fit: cover; }
         .product-info { padding: 1rem; }
         .product-title { font-size: 1.1rem; font-weight: 600; color: var(--text-main); margin-bottom: 0.5rem; }
         .product-price { color: var(--primary-color); font-weight: 700; font-size: 1.2rem; }
-        .filter-title { font-weight: 700; color: var(--primary-dark); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--secondary-color); }
+        .filter-title { font-weight: 700; color: var(--primary-dark); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--secondary-color); font-size: 1.3rem; }
         .category-list { list-style: none; padding: 0; }
         .category-list li { margin-bottom: 0.5rem; }
-        .category-list a { color: var(--text-muted); transition: color 0.2s; }
-        .category-list a:hover { color: var(--primary-color); }
-        .category-list a.active { color: var(--primary-dark); font-weight: 600; }
+        .category-list a { 
+            color: var(--text-muted); 
+            font-weight: 600; 
+            transition: all 0.2s; 
+            display: block; 
+            padding: 0.5rem 0.8rem; 
+            border-radius: 6px; 
+            text-decoration: none;
+        }
+        .category-list a:hover { 
+            color: var(--primary-dark); 
+            background: rgba(0,0,0,0.03); 
+            font-weight: 700; 
+            transform: translateX(4px);
+        }
+        .category-list a.active { 
+            color: white; 
+            background: var(--primary-color); 
+            font-weight: 700; 
+        }
     </style>
 </asp:Content>
 

@@ -104,7 +104,7 @@
         </div>
         
         <div class="text-center" style="margin-top: 1.5rem;">
-            <a href="OrderHistory.aspx" style="color: #94a3b8; text-decoration: none; font-weight: 500; transition: color 0.2s;" onmouseover="this.style.color='#475569'" onmouseout="this.style.color='#94a3b8'">← Cancel and go back</a>
+            <a href="OrderHistory.aspx" style="color: #94a3b8; text-decoration: none; font-weight: 500; transition: color 0.2s;" onmouseover="this.style.color='#475569'" onmouseout="this.style.color='#94a3b8'">Cancel and go back</a>
         </div>
     </div>
 </asp:Content>
