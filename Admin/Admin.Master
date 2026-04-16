@@ -1,0 +1,363 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Admin.master.cs" Inherits="HimVeda.Admin.AdminMaster" %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><asp:ContentPlaceHolder ID="TitleContent" runat="server">Admin Dashboard</asp:ContentPlaceHolder> - HimVeda Admin</title>
+    <link href="~/CSS/style.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --admin-bg: #f4f7fa;
+            --admin-sidebar: linear-gradient(180deg, #1e1e2d 0%, #151521 100%);
+            --admin-sidebar-hover: rgba(255, 255, 255, 0.08);
+            --admin-sidebar-active: #3699ff;
+            --admin-surface: #ffffff;
+            --admin-text: #3f4254;
+            --admin-muted: #b5b5c3;
+            --admin-border: #ecf0f3;
+        }
+
+        body {
+            background-color: var(--admin-bg);
+            color: var(--admin-text);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+        }
+
+        .dashboard-layout {
+            display: flex;
+            min-height: 100vh;
+            width: 100vw;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background: var(--admin-sidebar);
+            color: #a2a3b7;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 15px rgba(0,0,0,0.05);
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-brand {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            padding: 0 1.5rem;
+            color: #ffffff;
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: 'Outfit', sans-serif;
+            letter-spacing: 1px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            text-decoration: none;
+            gap: 12px;
+        }
+
+        .sidebar-brand i {
+            color: #3699ff;
+            font-size: 1.8rem;
+            filter: drop-shadow(0 0 8px rgba(54, 153, 255, 0.6));
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-brand:hover i {
+            transform: rotate(15deg) scale(1.1);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 1rem 0;
+            margin: 0;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .sidebar-menu li {
+            padding: 0.2rem 1rem;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1.2rem;
+            color: #a2a3b7;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            gap: 12px;
+        }
+
+        .sidebar-menu a i {
+            font-size: 1.2rem;
+            width: 24px;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .sidebar-menu a:hover {
+            color: #ffffff;
+            background: var(--admin-sidebar-hover);
+            transform: translateX(5px);
+        }
+
+        .sidebar-menu a.active {
+            color: #ffffff;
+            background: var(--admin-sidebar-active);
+            box-shadow: 0 4px 10px rgba(54, 153, 255, 0.3);
+        }
+
+        .sidebar-menu a:hover i {
+            transform: scale(1.15);
+        }
+
+        .sidebar-footer {
+            padding: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .sidebar-footer a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.8rem;
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+            gap: 10px;
+        }
+
+        .sidebar-footer a:hover {
+            background: #ef4444;
+            color: white;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* Main Content Styles */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .topbar {
+            height: 80px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            border-bottom: 1px solid var(--admin-border);
+            z-index: 50;
+        }
+
+        .topbar-search {
+            display: flex;
+            align-items: center;
+            background: var(--admin-bg);
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            width: 300px;
+            border: 1px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .topbar-search:focus-within {
+            border-color: #3699ff;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(54, 153, 255, 0.1);
+        }
+
+        .topbar-search input {
+            border: none;
+            background: transparent;
+            outline: none;
+            padding-left: 10px;
+            width: 100%;
+            color: var(--admin-text);
+            font-family: inherit;
+        }
+
+        .topbar-search i {color: var(--admin-muted);}
+
+        .topbar-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+        }
+
+        .profile-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #3699ff 0%, #a259ff 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 10px rgba(54, 153, 255, 0.3);
+            transition: transform 0.3s;
+        }
+        
+        .topbar-profile:hover .profile-avatar {
+            transform: scale(1.05) rotate(5deg);
+        }
+
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .profile-name {font-weight: 600; color: #181c32;}
+        .profile-role {font-size: 0.8rem; color: var(--admin-muted);}
+
+        .main-content {
+            padding: 2rem;
+            flex: 1;
+            overflow-y: auto;
+        }
+        
+        /* Fade In Animation for content */
+        .fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Restyle scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px;}
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .app-toast {
+            position: fixed;
+            right: 24px;
+            top: 24px;
+            z-index: 9999;
+            min-width: 260px;
+            max-width: 360px;
+            padding: 0.9rem 1rem;
+            border-radius: 10px;
+            color: #fff;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.22);
+            opacity: 0;
+            transform: translateY(-10px);
+            pointer-events: none;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+        .app-toast.show { opacity: 1; transform: translateY(0); }
+        .app-toast.success { background: #16a34a; }
+        .app-toast.error { background: #dc2626; }
+        .app-toast.info { background: #0284c7; }
+    </style>
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server" enctype="multipart/form-data">
+        <div class="dashboard-layout">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <a href="Dashboard.aspx" class="sidebar-brand">
+                    <i class="fa-solid fa-leaf"></i>
+                    HimVeda Admin
+                </a>
+                <ul class="sidebar-menu">
+                    <li><a href="../Default.aspx"><i class="fa-solid fa-house"></i> Public Home</a></li>
+                    <li><a href="Dashboard.aspx" class="<%= Request.Path.Contains("Dashboard") ? "active" : "" %>"><i class="fa-solid fa-chart-pie"></i> Dashboard Overview</a></li>
+                    <li><a href="Users.aspx" class="<%= Request.Path.Contains("Users") ? "active" : "" %>"><i class="fa-solid fa-user-group"></i> Manage Users</a></li>
+                    <li><a href="Vendors.aspx" class="<%= Request.Path.Contains("Vendors") ? "active" : "" %>"><i class="fa-solid fa-store"></i> Vendor Portal</a></li>
+                    <li><a href="Categories.aspx" class="<%= Request.Path.Contains("Categories") ? "active" : "" %>"><i class="fa-solid fa-layer-group"></i> Categories</a></li>
+                    <li><a href="Products.aspx" class="<%= Request.Path.Contains("Products") ? "active" : "" %>"><i class="fa-solid fa-box-open"></i> Products Directory</a></li>
+                    <li><a href="Orders.aspx" class="<%= Request.Path.Contains("Orders") ? "active" : "" %>"><i class="fa-solid fa-truck-fast"></i> Order Logistics</a></li>
+                    <li><a href="Coupons.aspx" class="<%= Request.Path.Contains("Coupons") ? "active" : "" %>"><i class="fa-solid fa-ticket-simple"></i> Promo Codes</a></li>
+                    <li><a href="ContactMessages.aspx" class="<%= Request.Path.Contains("ContactMessages") ? "active" : "" %>"><i class="fa-solid fa-envelope-circle-check"></i> Contact Messages</a></li>
+                    <li><a href="Feedback.aspx" class="<%= Request.Path.Contains("Feedback") ? "active" : "" %>"><i class="fa-solid fa-comment-dots"></i> User Feedback</a></li>
+                </ul>
+                <div class="sidebar-footer">
+                    <a href="../Login.aspx?logout=1&toast=Logged%20out%20successfully.&toastType=success"><i class="fa-solid fa-right-from-bracket"></i> Secure Logout</a>
+                </div>
+            </aside>
+
+            <!-- Main Layout -->
+            <div class="main-wrapper">
+                <header class="topbar">
+                    <div class="topbar-search">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" placeholder="Search functionality..." />
+                    </div>
+                    <div class="topbar-profile">
+                        <div class="profile-info text-right">
+                            <span class="profile-name"><%= Session["AdminName"] != null ? Session["AdminName"] : "Super Admin" %></span>
+                            <span class="profile-role">System Administrator</span>
+                        </div>
+                        <div class="profile-avatar">
+                            AD
+                        </div>
+                    </div>
+                </header>
+                <main class="main-content fade-in">
+                    <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                    </asp:ContentPlaceHolder>
+                </main>
+            </div>
+        </div>
+        <div id="appToast" class="app-toast info"></div>
+        <script>
+            (function () {
+                var params = new URLSearchParams(window.location.search);
+                var message = params.get("toast");
+                if (!message) return;
+
+                var type = (params.get("toastType") || "success").toLowerCase();
+                var toast = document.getElementById("appToast");
+                if (!toast) return;
+
+                toast.textContent = message;
+                toast.classList.remove("success", "error", "info");
+                toast.classList.add(type === "error" ? "error" : (type === "info" ? "info" : "success"));
+                toast.classList.add("show");
+
+                setTimeout(function () {
+                    toast.classList.remove("show");
+                }, 3200);
+
+                params.delete("toast");
+                params.delete("toastType");
+                var cleanQuery = params.toString();
+                var cleanUrl = window.location.pathname + (cleanQuery ? "?" + cleanQuery : "") + window.location.hash;
+                window.history.replaceState({}, document.title, cleanUrl);
+            })();
+        </script>
+    </form>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Vendor.master.cs" Inherits="HimVeda.Vendor.VendorMaster" %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><asp:ContentPlaceHolder ID="TitleContent" runat="server">Vendor Dashboard</asp:ContentPlaceHolder> - HimVeda Vendor Portal</title>
+    <link href="~/CSS/style.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        .app-toast {
+            position: fixed;
+            right: 24px;
+            top: 24px;
+            z-index: 9999;
+            min-width: 260px;
+            max-width: 360px;
+            padding: 0.9rem 1rem;
+            border-radius: 10px;
+            color: #fff;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
+            opacity: 0;
+            transform: translateY(-10px);
+            pointer-events: none;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+        .app-toast.show { opacity: 1; transform: translateY(0); }
+        .app-toast.success { background: #16a34a; }
+        .app-toast.error { background: #dc2626; }
+        .app-toast.info { background: #0284c7; }
+    </style>
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server" enctype="multipart/form-data">
+        <header style="background: var(--primary-color); color: white;">
+            <div class="container flex justify-between items-center navbar">
+                <a href="Dashboard.aspx" class="logo" style="color: white;">
+                    <i class="fa-solid fa-store"></i> HimVeda Vendor
+                </a>
+                <div class="nav-actions" style="display: flex; gap: 1.5rem; align-items: center;">
+                    <a href="../Default.aspx" style="color: #cbd5e1; text-decoration: none;"><i class="fa-solid fa-house"></i> Home</a>
+                    <span style="color: #cbd5e1;"><i class="fa-regular fa-circle-user"></i> <%= Session["VendorName"] != null ? Session["VendorName"] : "Store Manager" %></span>
+                    <a href="../Login.aspx?logout=1&toast=Logged%20out%20successfully.&toastType=success" class="btn btn-outline" style="border-color: white; color: white;">Logout</a>
+                </div>
+            </div>
+        </header>
+
+        <div class="dashboard-layout container" style="max-width: 1400px; padding: 0;">
+            <aside class="sidebar">
+                <ul class="sidebar-menu">
+                    <li><a href="Dashboard.aspx"><i class="fa-solid fa-chart-pie"></i> Dashboard</a></li>
+                    <li><a href="Products.aspx"><i class="fa-solid fa-boxes-stacked"></i> My Products (Inventory & Stock)</a></li>
+                    <li><a href="Orders.aspx"><i class="fa-solid fa-clipboard-list"></i> Customer Orders</a></li>
+                    <li><a href="Settings.aspx"><i class="fa-solid fa-gear"></i> Store Settings</a></li>
+                    <li><a href="Earnings.aspx"><i class="fa-solid fa-wallet"></i> Earnings & Payouts</a></li>
+                    <li><a href="Coupons.aspx"><i class="fa-solid fa-ticket"></i> Coupons</a></li>
+                </ul>
+            </aside>
+            <main class="main-content">
+                <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                </asp:ContentPlaceHolder>
+            </main>
+        </div>
+        <div id="appToast" class="app-toast info"></div>
+        <script>
+            (function () {
+                var params = new URLSearchParams(window.location.search);
+                var message = params.get("toast");
+                if (!message) return;
+
+                var type = (params.get("toastType") || "success").toLowerCase();
+                var toast = document.getElementById("appToast");
+                if (!toast) return;
+
+                toast.textContent = message;
+                toast.classList.remove("success", "error", "info");
+                toast.classList.add(type === "error" ? "error" : (type === "info" ? "info" : "success"));
+                toast.classList.add("show");
+
+                setTimeout(function () {
+                    toast.classList.remove("show");
+                }, 3200);
+
+                params.delete("toast");
+                params.delete("toastType");
+                var cleanQuery = params.toString();
+                var cleanUrl = window.location.pathname + (cleanQuery ? "?" + cleanQuery : "") + window.location.hash;
+                window.history.replaceState({}, document.title, cleanUrl);
+            })();
+        </script>
+    </form>
+</body>
+</html>

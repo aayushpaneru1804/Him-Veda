@@ -1,0 +1,77 @@
+﻿using System;
+using System.Data.SqlClient;
+using HimVeda.Classes;
+
+namespace HimVeda
+{
+    public partial class ContactPage : System.Web.UI.Page
+    {
+        protected void btnSubmitContact_Click(object sender, EventArgs e)
+        {
+            string fullName = txtFullName.Text.Trim();
+            string email = txtEmail.Text.Trim();
+            string phone = txtPhone.Text.Trim();
+            string subject = ddlSubject.SelectedValue.Trim();
+            string message = txtMessage.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(fullName) ||
+                string.IsNullOrWhiteSpace(email) ||
+                string.IsNullOrWhiteSpace(phone) ||
+                string.IsNullOrWhiteSpace(subject) ||
+                string.IsNullOrWhiteSpace(message))
+            {
+                ShowFormMessage("Please fill all fields before submitting.", false);
+                return;
+            }
+
+            string sql = @"INSERT INTO ContactMessages
+                           (FullName, Email, Phone, Subject, Message, SubmittedAt)
+                           VALUES (@FullName, @Email, @Phone, @Subject, @Message, GETDATE())";
+
+            SqlParameter[] p =
+            {
+                new SqlParameter("@FullName", fullName),
+                new SqlParameter("@Email", email),
+                new SqlParameter("@Phone", phone),
+                new SqlParameter("@Subject", subject),
+                new SqlParameter("@Message", message)
+            };
+
+            try
+            {
+                DBHelper.ExecuteNonQuery(sql, p);
+                ShowFormMessage("Thank you! Your message has been submitted successfully.", true);
+                ClearForm();
+            }
+            catch
+            {
+                ShowFormMessage("Unable to submit right now. Please run App_Data/add_contact_messages.sql once, then try again.", false);
+            }
+        }
+
+        private void ClearForm()
+        {
+            txtFullName.Text = "";
+            txtEmail.Text = "";
+            txtPhone.Text = "";
+            ddlSubject.SelectedIndex = 0;
+            txtMessage.Text = "";
+        }
+
+        private void ShowFormMessage(string text, bool success)
+        {
+            lblContactMessage.Visible = true;
+            lblContactMessage.Text = text;
+            if (success)
+            {
+                lblContactMessage.Style["background"] = "#dcfce7";
+                lblContactMessage.Style["color"] = "#166534";
+            }
+            else
+            {
+                lblContactMessage.Style["background"] = "#fee2e2";
+                lblContactMessage.Style["color"] = "#991b1b";
+            }
+        }
+    }
+}

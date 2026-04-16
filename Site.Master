@@ -1,0 +1,180 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="HimVeda.SiteMaster" %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><asp:ContentPlaceHolder ID="TitleContent" runat="server">HimVeda</asp:ContentPlaceHolder> - Authentic Himalayan Products</title>
+    
+    <link href="~/CSS/style.css" rel="stylesheet" type="text/css" />
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <style>
+        .user-dropdown { position: relative; display: inline-block; }
+        .user-dropdown-content { display: none; position: absolute; background-color: #ffffff; min-width: 150px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 100; border-radius: 8px; right: 0; top: 100%; overflow: hidden; }
+        .user-dropdown-content a { color: #334155; padding: 12px 16px; text-decoration: none; display: block; font-size: 0.95rem; border-bottom: 1px solid #f1f5f9; }
+        .user-dropdown-content a:last-child { border-bottom: none; }
+        .user-dropdown-content a:hover { background-color: #f8fafc; color: var(--primary-color); }
+        .user-dropdown:hover .user-dropdown-content { display: block; }
+        .app-toast {
+            position: fixed;
+            right: 24px;
+            top: 24px;
+            z-index: 9999;
+            min-width: 260px;
+            max-width: 360px;
+            padding: 0.9rem 1rem;
+            border-radius: 10px;
+            color: #fff;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
+            opacity: 0;
+            transform: translateY(-10px);
+            pointer-events: none;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+        .app-toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .app-toast.success { background: #16a34a; }
+        .app-toast.error { background: #dc2626; }
+        .app-toast.info { background: #0284c7; }
+    </style>
+
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <header>
+            <div class="container flex justify-between items-center navbar">
+                <a href="Default.aspx" class="logo">
+                    <i class="fa-solid fa-leaf" style="color: var(--primary-color);"></i>
+                    HimVeda
+                </a>
+                
+                <div class="nav-middle">
+                    <ul class="nav-links" id="navLinks">
+                        <li><a href="Default.aspx">Home</a></li>
+                        <li><a href="Products.aspx">Products</a></li>
+                        <li><a href="Categories.aspx">Categories</a></li>
+                        <li><a href="Contact.aspx">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="nav-actions">
+                    <asp:Panel DefaultButton="btnSearch" runat="server" CssClass="search-form hidden-mobile">
+                        <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" Placeholder="Search products..."></asp:TextBox>
+                        <asp:LinkButton ID="btnSearch" runat="server" OnClick="btnSearch_Click" CssClass="search-btn">
+                            <i class="fa-solid fa-search"></i>
+                        </asp:LinkButton>
+                    </asp:Panel>
+                    
+                    <a href="Cart.aspx" class="icon-btn cart-icon" title="Cart"><i class="fa-solid fa-cart-shopping"></i></a>
+                    <a href="Wishlist.aspx" class="icon-btn wishlist-icon" title="Wishlist"><i class="fa-regular fa-heart"></i></a>
+                    <% if (Session["Role"] != null) { %>
+                        <div class="user-menu" style="display: inline-flex; align-items: center; gap: 0.5rem; margin-left: 1rem;">
+                            <% if (Session["Role"].ToString() == "Customer") { %>
+                                <div class="user-dropdown">
+                                    <button type="button" class="btn btn-outline" style="border-color: var(--primary-color); color: var(--primary-color); white-space: nowrap; display: inline-flex; align-items: center; cursor: pointer;">
+                                        <i class="fa-regular fa-user mr-2"></i> Hi <%= Session["FullName"] %>
+                                    </button>
+                                    <div class="user-dropdown-content">
+                                        <a href="Profile.aspx"><i class="fa-solid fa-id-badge mr-2"></i> Profile</a>
+                                        <a href="OrderHistory.aspx"><i class="fa-solid fa-box-open mr-2"></i> Orders</a>
+                                        <a href="Login.aspx?logout=1&toast=Logged%20out%20successfully.&toastType=success" style="color: #ef4444;"><i class="fa-solid fa-right-from-bracket mr-2"></i> Logout</a>
+                                    </div>
+                                </div>
+                            <% } else if (Session["Role"].ToString() == "Admin") { %>
+                                <a href="Admin/Dashboard.aspx" class="btn btn-outline" style="border-color: var(--primary-color); color: var(--primary-color); white-space: nowrap; display: inline-flex; align-items: center;"><i class="fa-solid fa-shield-halved mr-2"></i> Hi <%= Session["AdminName"] %></a>
+                                <a href="Login.aspx?logout=1&toast=Logged%20out%20successfully.&toastType=success" class="btn btn-danger" style="padding: 0.5rem 0.8rem; background: #ef4444; color: white; border: none;" title="Logout"><i class="fa-solid fa-right-from-bracket"></i></a>
+                            <% } else if (Session["Role"].ToString() == "Vendor") { %>
+                                <a href="Vendor/Dashboard.aspx" class="btn btn-outline" style="border-color: var(--primary-color); color: var(--primary-color); white-space: nowrap; display: inline-flex; align-items: center;"><i class="fa-solid fa-store mr-2"></i> Hi <%= Session["VendorName"] %></a>
+                                <a href="Login.aspx?logout=1&toast=Logged%20out%20successfully.&toastType=success" class="btn btn-danger" style="padding: 0.5rem 0.8rem; background: #ef4444; color: white; border: none;" title="Logout"><i class="fa-solid fa-right-from-bracket"></i></a>
+                            <% } %>
+                        </div>
+                    <% } else { %>
+                        <a href="Login.aspx" class="btn btn-primary login-btn"><i class="fa-regular fa-user mr-2"></i> Login</a>
+                    <% } %>
+                    
+                    <!-- Hamburger Menu Button -->
+                    <button type="button" class="mobile-toggle icon-btn" onclick="toggleMenu()">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <script>
+            function toggleMenu() {
+                var menu = document.getElementById("navLinks");
+                if (menu.classList.contains("show-menu")) {
+                    menu.classList.remove("show-menu");
+                } else {
+                    menu.classList.add("show-menu");
+                }
+            }
+        </script>
+
+        <main>
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+            </asp:ContentPlaceHolder>
+        </main>
+
+        <footer style="background-color: var(--primary-dark); color: white; padding: 3rem 0; margin-top: 4rem;">
+            <div class="container flex justify-between">
+                <div>
+                    <h3 style="color: white;" class="logo"><i class="fa-solid fa-leaf"></i> HimVeda</h3>
+                    <p style="color: #cbd5e1; margin-top: 1rem; max-width: 300px;">Authentic, organic, and medicinal products sourced directly from the Himalayas.</p>
+                </div>
+                <div>
+                    <h4 style="color: white; margin-bottom: 1rem;">Quick Links</h4>
+                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem;">
+                        <li><a href="Products.aspx" style="color: #cbd5e1;">Shop</a></li>
+                        <li><a href="Register.aspx" style="color: #cbd5e1;">Register</a></li>
+                        <li><a href="Contact.aspx" style="color: #cbd5e1;">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="color: white; margin-bottom: 1rem;">Contact</h4>
+                    <p style="color: #cbd5e1;"><i class="fa-solid fa-envelope"></i> support@himveda.com</p>
+                    <p style="color: #cbd5e1;"><i class="fa-solid fa-phone"></i> +977 1234567890</p>
+                </div>
+            </div>
+            <div class="container text-center mt-2" style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem; color: #cbd5e1;">
+                &copy; <%: DateTime.Now.Year %> HimVeda. All rights reserved.
+            </div>
+        </footer>
+        <div id="appToast" class="app-toast info"></div>
+        <script>
+            (function () {
+                var params = new URLSearchParams(window.location.search);
+                var message = params.get("toast");
+                if (!message) return;
+
+                var type = (params.get("toastType") || "success").toLowerCase();
+                var toast = document.getElementById("appToast");
+                if (!toast) return;
+
+                toast.textContent = message;
+                toast.classList.remove("success", "error", "info");
+                toast.classList.add(type === "error" ? "error" : (type === "info" ? "info" : "success"));
+                toast.classList.add("show");
+
+                setTimeout(function () {
+                    toast.classList.remove("show");
+                }, 3200);
+
+                params.delete("toast");
+                params.delete("toastType");
+                var cleanQuery = params.toString();
+                var cleanUrl = window.location.pathname + (cleanQuery ? "?" + cleanQuery : "") + window.location.hash;
+                window.history.replaceState({}, document.title, cleanUrl);
+            })();
+        </script>
+    </form>
+</body>
+</html>

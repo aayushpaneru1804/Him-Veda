@@ -1,0 +1,100 @@
+﻿using System;
+using System.Data.SqlClient;
+using HimVeda.Classes;
+
+namespace HimVeda
+{
+    public partial class ContactPage : System.Web.UI.Page
+    {
+        protected void btnSubmitContact_Click(object sender, EventArgs e)
+        {
+            string fullName = txtFullName.Text.Trim();
+            string email = txtEmail.Text.Trim();
+            string phone = txtPhone.Text.Trim();
+            string subject = ddlSubject.SelectedValue.Trim();
+            string message = txtMessage.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(fullName) ||
+                string.IsNullOrWhiteSpace(email) ||
+                string.IsNullOrWhiteSpace(phone) ||
+                string.IsNullOrWhiteSpace(subject) ||
+                string.IsNullOrWhiteSpace(message))
+            {
+                ShowFormMessage("Please fill all fields before submitting.", false);
+                return;
+            }
+
+            // Ensure ContactMessages table exists; create if missing
+            string createTableSql = @"
+IF OBJECT_ID('dbo.ContactMessages','U') IS NULL
+BEGIN
+    CREATE TABLE dbo.ContactMessages (
+        ContactMessageID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+        FullName NVARCHAR(200) NOT NULL,
+        Email NVARCHAR(200) NOT NULL,
+        Phone NVARCHAR(50) NOT NULL,
+        Subject NVARCHAR(200) NOT NULL,
+        Message NVARCHAR(MAX) NOT NULL,
+        SubmittedAt DATETIME NOT NULL DEFAULT(GETDATE())
+    );
+END
+";
+
+            string insertSql = @"INSERT INTO ContactMessages (FullName, Email, Phone, Subject, Message, SubmittedAt)
+                                 VALUES (@FullName, @Email, @Phone, @Subject, @Message, GETDATE())";
+
+            SqlParameter[] p =
+            {
+                new SqlParameter("@FullName", fullName),
+                new SqlParameter("@Email", email),
+                new SqlParameter("@Phone", phone),
+                new SqlParameter("@Subject", subject),
+                new SqlParameter("@Message", message)
+            };
+
+            try
+            {
+                // create table if it doesn't exist
+                DBHelper.ExecuteNonQuery(createTableSql);
+
+                // insert message
+                DBHelper.ExecuteNonQuery(insertSql, p);
+
+                // Optionally set a session flag or query string for home to show a toast
+                // Redirect to home page after successful submission
+                Response.Redirect("~/Default.aspx?contact=1", false);
+                Context.ApplicationInstance.CompleteRequest();
+            }
+            catch (Exception ex)
+            {
+                // Log exception if DBHelper supports it; otherwise show friendly message
+                ShowFormMessage("Unable to submit right now. Please try again later.", false);
+            }
+        }
+
+        private void ClearForm()
+        {
+            txtFullName.Text = "";
+            txtEmail.Text = "";
+            txtPhone.Text = "";
+            ddlSubject.SelectedIndex = 0;
+            txtMessage.Text = "";
+        }
+
+        private void ShowFormMessage(string text, bool success)
+        {
+            lblContactMessage.Visible = true;
+            lblContactMessage.Text = text;
+            if (success)
+            {
+                lblContactMessage.Style["background"] = "#dcfce7";
+                lblContactMessage.Style["color"] = "#166534";
+            }
+            else
+            {
+                lblContactMessage.Style["background"] = "#fee2e2";
+                lblContactMessage.Style["color"] = "#991b1b";
+            }
+        }
+    }
+}

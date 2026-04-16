@@ -1,0 +1,13 @@
+C:\Users\Nitro V15\OneDrive - Lord Buddha Education Foundation\Desktop\5th sem\mwm\Him-Veda\obj\Debug\HimVeda.csproj.AssemblyReference.cache
+C:\Users\Nitro V15\OneDrive - Lord Buddha Education Foundation\Desktop\5th sem\mwm\Him-Veda\obj\Debug\HimVeda.csproj.CoreCompileInputs.cache
+C:\Users\Nitro V15\OneDrive - Lord Buddha Education Foundation\Desktop\5th sem\mwm\Him-Veda\bin\HimVeda.dll
+C:\Users\Nitro V15\OneDrive - Lord Buddha Education Foundation\Desktop\5th sem\mwm\Him-Veda\bin\HimVeda.pdb
+C:\Users\Nitro V15\OneDrive - Lord Buddha Education Foundation\Desktop\5th sem\mwm\Him-Veda\obj\Debug\HimVeda.dll
+C:\Users\Nitro V15\OneDrive - Lord Buddha Education Foundation\Desktop\5th sem\mwm\Him-Veda\obj\Debug\HimVeda.pdb
+C:\Users\Nitro V15\OneDrive - Lord Buddha Education Foundation\Desktop\5th sem\mwm\Him-Veda\bin\HimVeda.dll.config
+C:\Users\Asus\Desktop\HimVeda\Him-Veda\bin\HimVeda.dll
+C:\Users\Asus\Desktop\HimVeda\Him-Veda\bin\HimVeda.pdb
+C:\Users\Asus\Desktop\HimVeda\Him-Veda\obj\Debug\HimVeda.csproj.AssemblyReference.cache
+C:\Users\Asus\Desktop\HimVeda\Him-Veda\obj\Debug\HimVeda.csproj.CoreCompileInputs.cache
+C:\Users\Asus\Desktop\HimVeda\Him-Veda\obj\Debug\HimVeda.dll
+C:\Users\Asus\Desktop\HimVeda\Him-Veda\obj\Debug\HimVeda.pdb
